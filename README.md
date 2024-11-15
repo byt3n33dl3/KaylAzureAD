@@ -2,7 +2,7 @@
 
 >- Kayl is a Blooded Bayonet for Firewall Throat Cutting. DNS THROATCUTTER
 
->- Basically a Firewall Execution, Bypasser, Attacks, etc.
+>- Basically a Firewall Execution, Bypasser, Attacks, and More.
 
 ## How to Use [Kayl](https://github.com/byt3n33dl3/KaylAzureAD)
 
