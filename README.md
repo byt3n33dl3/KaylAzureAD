@@ -3,7 +3,7 @@
 >- Kayl is a Blooded Bayonet for Firewall Throat Cutting. DNS THROATCUTTER
 
 
-# Usage
+## How to Use [Kayl](https://github.com/byt3n33dl3/KaylAzureAD)
 
 ```
 usage: ./kayl -[u|l|b|g] VALUE|PATH|PATH|PATH [-p|--pl] PAYLOAD,..|PATH [--args]
