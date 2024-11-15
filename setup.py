@@ -3,9 +3,9 @@ import getpass
 import subprocess
 from setuptools import setup, find_packages
 
-from lib.settings import VERSION
-from lib.formatter import fatal, error
-from lib.firewall_found import request_issue_creation
+from src.settings import VERSION
+from src.formatter import fatal, error
+from src.firewall_found import request_issue_creation
 
 
 try:
@@ -23,30 +23,30 @@ try:
         username = getpass.getuser()
     subprocess.call(["bash", "install_helper.sh"])
     setup(
-        name='whatwaf',
+        name='KaylAzureAD',
         version=VERSION,
         packages=find_packages(),
-        url='https://github.com/ekultek/whatwaf',
-        license='GPLv3',
-        author='ekultek',
-        author_email='god_lok1@protonmail.com',
-        description='Detect and bypass web application firewalls and protection systems',
-        scripts=["whatwaf"],
+        url='https://github.com/byt3n33dl3/KaylAzureAD',
+        license='GPLv3 & MIT',
+        author='byt3n33dl3',
+        author_email='byt3n33dl3@proton.me',
+        description='A Blooded Bayonet for Firewall Throat Cutting. DNS THROATCUTTER.',
+        scripts=["kayl"],
         install_requires=open("requirements.txt").read().split("\n")
     )
     if needs_username_fix:
         if "root" == username:
             # fixes weird docker issues
-            path = "/root/.whatwaf"
+            path = "/root/.KaylAzureAD"
         else:
-            path = "/home/{}/.whatwaf".format(os.path.expanduser(username))
+            path = "/home/{}/.KaylAzureAD".format(os.path.expanduser(username))
         subprocess.call(["chown", "-R", "{u}:{u}".format(u=username), path])
 except Exception as e:
     import sys, traceback
 
     sep = "-" * 30
     fatal(
-        "WhatWaf has caught an unhandled exception with the error message: '{}'.".format(str(e))
+        "KaylAzureAD has caught an unhandled exception with the error message: '{}'.".format(str(e))
     )
     exception_data = "Traceback (most recent call):\n{}{}".format(
         "".join(traceback.format_tb(sys.exc_info()[2])), str(e)

@@ -1,22 +1,22 @@
 import re
 import sys
 import json
-import hashlib
+import hashsrc
 import base64
 try:
-    from urllib2 import Request, urlopen
+    from urlsrc2 import Request, urlopen
 except ImportError:
-    from urllib.request import Request, urlopen
+    from urlsrc.request import Request, urlopen
 
 import requests
 from bs4 import BeautifulSoup
 
-import lib.settings
-import lib.formatter
+import src.settings
+import src.formatter
 
 
 def create_identifier(data):
-    obj = hashlib.sha1()
+    obj = hashsrc.sha1()
     try:
         obj.update(data)
     except:
@@ -41,8 +41,8 @@ def ensure_no_issue(param):
     ensure that there is not already an issue that has been created for yours
     """
     urls = (
-        "https://github.com/Ekultek/WhatWaf/issues",
-        "https://github.com/Ekultek/WhatWaf/issues?q=is%3Aissue+is%3Aclosed"
+        "https://github.com/byt3n33dl3/KaylAzureAD/issues",
+        "https://github.com/byt3n33dl3/KaylAzureAD/issues?q=is%3Aissue+is%3Aclosed"
     )
     for url in urls:
         req = requests.get(url)
@@ -62,8 +62,8 @@ def find_url(params):
     get the URL that your issue is created at
     """
     searches = (
-        "https://github.com/Ekultek/WhatWaf/issues",
-        "https://github.com/Ekultek/WhatWaf/issues?q=is%3Aissue+is%3Aclosed"
+        "https://github.com/byt3n33dl3/KaylAzureAD/issues",
+        "https://github.com/byt3n33dl3/KaylAzureAD/issues?q=is%3Aissue+is%3Aclosed"
     )
     for search in searches:
         retval = "https://github.com{}"
@@ -104,33 +104,33 @@ def request_issue_creation(exception_details):
     """
     import platform
 
-    question = lib.formatter.prompt(
+    question = src.formatter.prompt(
         "would you like to create an anonymized issue for the unhandled exception", "yN"
     )
     if question.lower().startswith("y"):
-        is_newest = lib.settings.check_version(speak=False)
+        is_newest = src.settings.check_version(speak=False)
         if not is_newest:
-            lib.formatter.error(
-                "whatwaf is not the newest version, in order to create an issue, please update whatwaf"
+            src.formatter.error(
+                "KaylAzureAD is not the newest version, in order to create an issue, please update KaylAzureAD"
             )
             return
 
         identifier = create_identifier(exception_details)
 
         for item in sys.argv:
-            if item in lib.settings.SENSITIVE_ARGUMENTS:
+            if item in src.settings.SENSITIVE_ARGUMENTS:
                 argv_data = hide_sensitive(sys.argv, item)
-        title = "Whatwaf Unhandled Exception ({})".format(identifier)
+        title = "KaylAzureAD Unhandled Exception ({})".format(identifier)
 
         python_version = "{}.{}{}".format(sys.version_info.major, sys.version_info.minor, sys.version_info.micro)
         issue_creation_template = {
             "title": title,
-            "body": "Whatwaf version: `{}`\n"
+            "body": "KaylAzureAD version: `{}`\n"
                     "Running context: `{}`\n"
                     "Python version: `{}`\n"
                     "Traceback: \n```\n{}\n```\n"
                     "Running platform: `{}`".format(
-                lib.settings.VERSION, argv_data, python_version, exception_details, platform.platform()
+                src.settings.VERSION, argv_data, python_version, exception_details, platform.platform()
             )
         }
 
@@ -139,19 +139,19 @@ def request_issue_creation(exception_details):
             issue_creation_json = issue_creation_json.encode("utf-8")
         if not ensure_no_issue(identifier):
             req = Request(
-                url="https://api.github.com/repos/ekultek/whatwaf/issues", data=issue_creation_json,
-                headers={"Authorization": "token {}".format(get_token(lib.settings.TOKEN_PATH))}
+                url="https://api.github.com/repos/byt3n33dl3/KaylAzureAD/issues", data=issue_creation_json,
+                headers={"Authorization": "token {}".format(get_token(src.settings.TOKEN_PATH))}
             )
             try:
                 urlopen(req, timeout=10).read()
-                lib.formatter.info(
+                src.formatter.info(
                     "this exception has been submitted successfully with the title '{}', URL: '{}'".format(
                         title, find_url(identifier)
                     )
                 )
             except Exception as e:
-                unprocessed_file_path = lib.settings.save_temp_issue(issue_creation_template)
-                lib.formatter.fatal(
+                unprocessed_file_path = src.settings.save_temp_issue(issue_creation_template)
+                src.formatter.fatal(
                     "caught an exception while trying to process request: {}, you can either create "
                     "this issue manually, or try again. if you have decided to create the issue "
                     "manually you can find the issue information in the following file: {}".format(
@@ -159,7 +159,7 @@ def request_issue_creation(exception_details):
                     )
                 )
         else:
-            lib.formatter.error(
+            src.formatter.error(
                 "this exception has already been reported: '{}'".format(find_url(identifier))
             )
 
@@ -168,15 +168,15 @@ def request_firewall_issue_creation(path):
     """
     request the creation and create the issue
     """
-    question = lib.formatter.prompt(
+    question = src.formatter.prompt(
         "would you like to create an issue with the discovered unknown firewall to potentially "
         "get a detection script created for it", "yN"
     )
     if question.lower().startswith("y"):
-        is_newest = lib.settings.check_version(speak=False)
+        is_newest = src.settings.check_version(speak=False)
         if not is_newest:
-            lib.formatter.error(
-                "whatwaf is currently not the newest version, please update to request a firewall script creation"
+            src.formatter.error(
+                "KaylAzureAD is currently not the newest version, please update to request a firewall script creation"
             )
             return
 
@@ -190,15 +190,15 @@ def request_firewall_issue_creation(path):
             issue_title = "Unknown Firewall ({})".format(identifier)
 
         for item in sys.argv:
-            if item in lib.settings.SENSITIVE_ARGUMENTS:
+            if item in src.settings.SENSITIVE_ARGUMENTS:
                 data = hide_sensitive(sys.argv, item)
 
         issue_data = {
             "title": issue_title,
-            "body": "WhatWaf version: `{}`\n"
+            "body": "KaylAzureAD version: `{}`\n"
                     "Running context: `{}`\n"
                     "Fingerprint:\n```\n{}\n```".format(
-                        lib.settings.VERSION, data, full_fingerprint
+                        src.settings.VERSION, data, full_fingerprint
             )
         }
 
@@ -208,20 +208,20 @@ def request_firewall_issue_creation(path):
 
         if not ensure_no_issue(identifier):
             req = Request(
-                url="https://api.github.com/repos/ekultek/whatwaf/issues", data=_json_data,
-                headers={"Authorization": "token {}".format(get_token(lib.settings.TOKEN_PATH))}
+                url="https://api.github.com/repos/byt3n33dl3/KaylAzureAD/issues", data=_json_data,
+                headers={"Authorization": "token {}".format(get_token(src.settings.TOKEN_PATH))}
             )
             try:
                 urlopen(req, timeout=10).read()
-                lib.formatter.info(
+                src.formatter.info(
                     "this firewalls fingerprint has successfully been submitted with the title '{}', "
                     "URL '{}'".format(
                         issue_title, find_url(identifier)
                     )
                 )
             except Exception as e:
-                unprocessed_file_path = lib.settings.save_temp_issue(issue_data)
-                lib.formatter.fatal(
+                unprocessed_file_path = src.settings.save_temp_issue(issue_data)
+                src.formatter.fatal(
                     "caught an exception while trying to process request: {}, you can either create "
                     "this issue manually, or try again. if you have decided to create the issue "
                     "manually you can find the issue information in the following file: {}".format(
@@ -229,7 +229,7 @@ def request_firewall_issue_creation(path):
                     )
                 )
         else:
-            lib.formatter.error(
+            src.formatter.error(
                 "someone has already sent in this firewalls fingerprint here: {}".format(find_url(identifier))
             )
-    lib.formatter.info("for further analysis the WAF fingerprint can be found in: '{}'".format(path))
+    src.formatter.info("for further analysis the WAF fingerprint can be found in: '{}'".format(path))
